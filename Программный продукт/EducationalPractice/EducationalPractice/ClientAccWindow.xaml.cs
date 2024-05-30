@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -28,11 +29,12 @@ namespace EducationalPractice
         // Установка информации про аккаунт
         private void setUserInformation()
         {
-            string[] inf = new DatabaseConnection().returnUserAccountInformation();
-            fio.Text = inf[0];
-            phone.Text = inf[0];
-            role.Text = inf[0];
+            Dictionary<string, string> userInf = new Instruments().userAccountInformation();
+            fio.Text = userInf["ФИО"];
+            phone.Text = userInf["Телефон"];
+            role.Text = userInf["Роль"];
         }
+
 
         // Передвижение окна
         private void DragWindow(object sender, RoutedEventArgs e)
@@ -47,10 +49,16 @@ namespace EducationalPractice
 
         }
 
-
+        // Открытие окна для создания новой заявки
         private void CreateApplication(object sender, RoutedEventArgs e)
         {
-
+            NewApplicationWindow newApplicationWindow = new NewApplicationWindow()
+            {
+                Top = Top,
+                Left = Left
+            };
+            newApplicationWindow.Show();
+            this.Visibility = Visibility.Hidden;
         }
 
         private void LogOut(object sender, RoutedEventArgs e)

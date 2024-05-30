@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -22,7 +23,7 @@ namespace EducationalPractice
         public NewApplicationWindow()
         {
             InitializeComponent();
-
+            setDate();
 
         }
 
@@ -43,17 +44,6 @@ namespace EducationalPractice
 
         }
 
-        private void RegRepair(object sender, RoutedEventArgs e)
-        {
-            Dictionary<string, string> ApplicationRegInformation = new Dictionary<string, string>()
-            {
-                {"Дата добавления", ""},
-                {"Тип техники", TechTypeInput.Text.ToString()},
-                {"Модель техники", TechModelInput.Text.ToString()},
-                {"Описание проблемы", ProblemDiscription.Text.ToString()},
-                {"Статус", "Не выполнено" },
-            };
-        }
 
 
         // Обработка выхода из приложения
@@ -79,16 +69,66 @@ namespace EducationalPractice
         private void OpenMyApplications(object sender, RoutedEventArgs e)
         {
 
-            MyApplicationsView myApplicationsView = new MyApplicationsView()
+
+            if (new Instruments().createQuestionMessageBox("Процесс создания заявки завершится! Продолжить?"))
             {
-                Left = Left,
-                Top = Top
+                MyApplicationsView myApplicationsView = new MyApplicationsView()
+                {
+                    Left = Left,
+                    Top = Top
+                };
+
+                myApplicationsView.Show();
+                this.Visibility = Visibility.Hidden;
+            }
+
+        }
+
+        // Создание заявки
+        private void addNewRepair(object sender, RoutedEventArgs e)
+        {
+            Dictionary<string, string> applicationCreateInfo = new Dictionary<string, string>()
+            {
+                {"Дата добавления", RegDate.Text.ToString()},
+                {"Тип техники", TechTypeInput.Text.ToString()},
+                {"Модель техники", TechModelInput.Text.ToString()},
+                {"Описание", ProblemDiscription.Text.ToString()},
+                {"Статус", "Новая заявка"},
+                {"ID Заказчика", new CacheWork().ReturnUserId().ToString()}
             };
+            bool checkResult = true;
+            foreach (var item in applicationCreateInfo)
+            {
+                if ((checkResult = checkInputInformation(item.Value)) == false)
+                    break;
+            }
+            // Проверка корректности данных
+            if (!checkResult)
+            {
+                new Instruments().createInformationMessageBox("Ошибка при проверке данных. проверьте чтобы каждое поле было заполнено!");
+                return;
+            }
+            // Регистрация заявки
+            if (new DatabaseConnection().RepairReg(applicationCreateInfo))
+            {
+                new Instruments().createInformationMessageBox("Заявка зарегистрирована!");
+                // Возврат на окно аккаунта
+                new Instruments().openUserAccounts("Заказчик");
+                this.Visibility = Visibility.Hidden;
+            }
 
-            myApplicationsView.Show();
-            this.Visibility = Visibility.Hidden;
 
 
+        }
+
+        // Проверка информации на корректность
+        private bool checkInputInformation(string example)
+        {
+            if (example.Length < 1)
+            {
+                return false;
+            }
+            return true;
         }
     }
 

@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -22,19 +23,23 @@ namespace EducationalPractice
         public MyApplicationsView()
         {
             InitializeComponent();
-            setApplicationInf();
+            setApplicationsInf();
         }
 
 
-        private void setApplicationInf()
+        private void setApplicationsInf()
         {
-            Instruments instruments = new Instruments();
-            foreach (var ApplicationInf in new DatabaseConnection().returnApplicationInf())
+            foreach (var item in new DatabaseConnection().returnApplicationsInfo())
             {
-                Console.WriteLine(ApplicationInf);
-                // Заполнение Combobox Исполнителей
-                SelectApplication.Items.Add(instruments.faultText($"{ApplicationInf.Key} Статус: {ApplicationInf.Value}"));
+                StackPanel grid = new StackPanel();
+                Border border = new Instruments().createAppBorder(item.Key);
+                foreach (var info in item.Value)
+                {
+                    grid.Children.Add(new Instruments().createAppInfTextBlock(info.Value));
+                }
 
+                border.Child = grid;
+                AppShower.Children.Add(border);
             }
         }
 
@@ -75,23 +80,8 @@ namespace EducationalPractice
                 new Instruments().exitApp();
         }
 
-        // Обработка изменение исполнителя
-        private void ChangeContractor(object sender, RoutedEventArgs e)
-        {
-            if (SelectApplication.Text.ToString().Length != 0)
-            {
-
-            }
-        }
 
 
-        // Обработка изменение Описания
-        private void ChangeDescription(object sender, RoutedEventArgs e)
-        {
-            if (SelectApplication.Text.ToString().Length != 0)
-            {
 
-            }
-        }
     }
 }

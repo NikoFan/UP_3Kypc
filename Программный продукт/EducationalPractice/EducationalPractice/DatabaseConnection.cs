@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using System.Diagnostics.Contracts;
 using System.Collections.Specialized;
 using System.IO;
+using System.Windows.Forms;
 
 namespace EducationalPractice
 {
@@ -220,15 +221,87 @@ namespace EducationalPractice
         }
 
 
+        // Возврат информации про заявки пользователя
+        public Dictionary<string, Dictionary<string, string>> returnApplicationsInfo()
+        {
+            Dictionary<string, Dictionary<string, string>> appInformation = new Dictionary<string, Dictionary<string, string>>();
+            using (SqlConnection conn = new SqlConnection(url))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = $@"
+                    SELECT *
+                    FROM Заявка
+                    WHERE [ID Заказчика] = {new CacheWork().ReturnUserId()};
+                    ";
+
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        Dictionary<string, string> dict = new Dictionary<string, string>()
+                        {
+                            {"Дата добавления", (""+dr["Дата добавления"]).Trim().Split(' ')[0]},
+                            {"Тип техники", (""+dr["Тип техники"]).Trim()},
+                            {"Модель техники", (""+dr["Модель техники"]).Trim()},
+                            {"Статус", (""+dr["Статус"]).Trim()},
+                            {"Дата окончания", (""+dr["Дата окончания"]).Trim()},
+                        };
+
+                        appInformation[("" + dr["ID Заявки"]).Trim()] = dict;
+
+                    }
+                    dr.Close();
+                }
+                conn.Close();
+            }
+            return appInformation;
+        }
+
+
+
+        // Возврат информации про пользователя
+        public Dictionary<string, string> returnuserAccountInformation()
+        {
+            Dictionary<string, string> returnInformation = new Dictionary<string, string>()
+            {
+                {"ФИО",""}, {"Логин",""}, {"Телефон",""}, {"Роль",""},
+            };
+
+            using (SqlConnection conn = new SqlConnection(url))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = $@"
+                    SELECT ФИО, Логин, Телефон, Роль
+                    FROM {new CacheWork().ReturnUserRole()};
+                    ";
+
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        returnInformation["ФИО"] = ("" + dr["ФИО"]).Trim();
+                        returnInformation["Телефон"] = ("" + dr["Телефон"]).Trim();
+                        returnInformation["Роль"] = ("" + dr["Роль"]).Trim();
+
+
+                    }
+                    dr.Close();
+                }
+                conn.Close();
+            }
+
+            return returnInformation;
+        }
+
+
         // Регистрация заявки
         public bool RepairReg(Dictionary<string, string> information)
         {
             ulong id = takeActiveId("Заявка");
-            foreach(var item in information)
-            {
-                Console.WriteLine( item.Key + " : " + item.Value);
-            }
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(url))
@@ -236,26 +309,20 @@ namespace EducationalPractice
 
                     connection.Open();
                     SqlCommand commandToAddInformationFromTable = new SqlCommand($@"
-                Use RepairService
                 INSERT INTO Заявка
-                VALUES({id}, N'{information["Дата добавления"]}', N'{information["Описание"]}', N'{information["Статус"]}',
-N'{information["Комментарий"]}', N'{information["ID Заказчика"]}', N'{information["ID Исполнителя"]}',
-N'{information["Тип неисправности"]}', N'{information["Набор инструментов"]}')");
+                VALUES({id}, '{information["Дата добавления"]}', '{information["Тип техники"]}', '{information["Модель техники"]}', '{information["Описание"]}', '{information["Статус"]}', null, null, null, {new CacheWork().ReturnUserId()})");
                     commandToAddInformationFromTable.Connection = connection;
                     commandToAddInformationFromTable.ExecuteNonQuery();
                 }
-                new Instruments().createInformationMessageBox(
-                    $"The application has been registered, the application number is: {id}.\nDate: {information["Дата добавления"]}") ;
+                // Возврат результата
                 return true;
-                
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex);
                 return false;
             }
-            
-            
+
+
         }
     }
 }

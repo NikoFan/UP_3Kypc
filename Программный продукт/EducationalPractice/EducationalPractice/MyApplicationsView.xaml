@@ -25,22 +25,22 @@
                 Orientation="Vertical">
                 <Button
                     x:Name="GoRegistration"
-                    Content="My applications"
+                    Content="Заявки"
                     Style="{StaticResource SettingsButton_style}" />
                 <Button
                     x:Name="GoAuthorization"
                     Click="CreateApplication"
-                    Content="New applications"
+                    Content="Создать заявку"
                     Style="{StaticResource SettingsButton_style}" />
                 <Button
                     x:Name="LogOutBtn"
                     Click="GoAccount"
-                    Content="Account"
+                    Content="Аккаунт"
                     Style="{StaticResource SettingsButton_style}" />
                 <Button
                     x:Name="BoOut"
                     Click="GoOut"
-                    Content="Go out"
+                    Content="Закрыть сессию"
                     Style="{StaticResource SettingsButton_style}" />
             </StackPanel>
         </Grid>
@@ -49,30 +49,16 @@
         <Grid Style="{StaticResource RightSide_style}">
             <StackPanel Style="{StaticResource userAccount_style}">
 
-                <TextBlock Style="{StaticResource TitleText_style}" Text="My applications" />
-                <TextBlock Style="{StaticResource smallText_style}" Text="View" />
-                <TextBlock Style="{StaticResource smallText_style}" Text="Select the application to edit" />
-                <TextBlock Style="{StaticResource normalAccountText_style}" Text="Applications" />
-                <ComboBox x:Name="SelectApplication" Height="35" />
+                <TextBlock Style="{StaticResource TitleText_style}" Text="Мои заявки" />
+                <TextBlock Style="{StaticResource smallText_style}" Text="Просмотр" />
+                <TextBlock Style="{StaticResource smallText_style}" Text="Выберите заявку для просмотра изменений" />
+                <TextBlock Style="{StaticResource normalAccountText_style}" Text="Заявки" />
+                <ScrollViewer Style="{StaticResource ScrollView_style}">
+                    <StackPanel x:Name="AppShower" />
+                </ScrollViewer>
             </StackPanel>
-            <TextBlock
-                Margin="0,0,0,100"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Bottom"
-                Style="{StaticResource normalAccountText_style}"
-                Text="Edit" />
-            <StackPanel Style="{StaticResource ContinueBackBtnBlock_style}">
-                <Button
-                    Width="130"
-                    Click="ChangeDescription"
-                    Content="Description"
-                    Style="{StaticResource ContinueButton_style}" />
-                <Button
-                    Width="130"
-                    Click="ChangeContractor"
-                    Content="Contractor"
-                    Style="{StaticResource ContinueButton_style}" />
-            </StackPanel>
+
+
         </Grid>
     </Grid>
 </Window>

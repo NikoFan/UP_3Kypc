@@ -291,7 +291,7 @@
             <Setter Property="Height" Value="50" />
             <Setter Property="Width" Value="200" />
             <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Content" Value="Continue" />
+            <Setter Property="Content" Value="Продолжить" />
             <Setter Property="Background" Value="#431275" />
             <Setter Property="Foreground" Value="White" />
             <Setter Property="FontSize" Value="20" />
@@ -481,7 +481,7 @@
 
         <!--  Стиль для описания проблемы  -->
         <Style x:Key="problemInput_style" TargetType="TextBox">
-            <Setter Property="Height" Value="150" />
+            <Setter Property="Height" Value="50" />
             <Setter Property="FontStyle" Value="italic" />
             <Setter Property="FontSize" Value="20" />
             <Setter Property="MaxLength" Value="300" />
@@ -494,6 +494,12 @@
         <Style x:Key="newApplicationStackPanel_style" TargetType="StackPanel">
             <Setter Property="Orientation" Value="Vertical" />
             <Setter Property="Height" Value="550" />
+        </Style>
+
+        <!--  Стиль для просмотра заявок  -->
+        <Style x:Key="ScrollView_style" TargetType="ScrollViewer">
+            <Setter Property="Height" Value="350" />
+            <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
     </Application.Resources>
 </Application>

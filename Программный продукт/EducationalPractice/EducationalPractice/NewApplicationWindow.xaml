@@ -23,13 +23,12 @@
                 VerticalAlignment="Center"
                 Background="#322840"
                 Orientation="Vertical">
+
                 <Button
                     Click="OpenMyApplications"
                     Content="Мои заявки"
                     Style="{StaticResource SettingsButton_style}" />
-                <Button
-                    Content="Новая заявка"
-                    Style="{StaticResource SettingsButton_style}" />
+                <Button Content="Новая заявка" Style="{StaticResource SettingsButton_style}" />
                 <Button
                     Click="GoAccount"
                     Content="Аккаунт"
@@ -43,46 +42,50 @@
 
         <!--  Основная область  -->
         <Grid Style="{StaticResource RightSide_style}">
-            <ScrollViewer>
-                <StackPanel Style="{StaticResource newApplicationStackPanel_style}">
-                    <TextBlock Style="{StaticResource TitleText_style}" Text="Новая заявка" />
-                    <TextBlock Style="{StaticResource normalAccountText_style}" Text="Дата регистрации: " />
-                    <TextBlock
-                        x:Name="RegDate"
-                        Style="{StaticResource smallText_style}"
-                        Text="14-02-2005" />
 
-                    <!--  Ввод типа техники  -->
-                    <TextBlock Style="{StaticResource normalAccountText_style}" Text="Тип техники*" />
-                    <TextBox
-                        x:Name="TechTypeInput"
-                        Height="30"
-                        MaxLength="30"
-                        Style="{StaticResource problemInput_style}" />
+            <StackPanel
+                Width="550"
+                Height="600"
+                Style="{StaticResource newApplicationStackPanel_style}">
 
-                    <!--  Ввод модель техники  -->
-                    <TextBlock Style="{StaticResource normalAccountText_style}" Text="Модель техники*" />
-                    <TextBox
-                        x:Name="TechModelInput"
-                        Height="30"
-                        MaxLength="100"
-                        Style="{StaticResource problemInput_style}" />
+                <TextBlock Style="{StaticResource TitleText_style}" Text="Новая заявка" />
+                <TextBlock Style="{StaticResource normalAccountText_style}" Text="Дата регистрации: " />
+                <TextBlock
+                    x:Name="RegDate"
+                    Style="{StaticResource smallText_style}"
+                    Text="14-02-2005" />
 
-                    <!--  Ввод модель техники  -->
-                    <TextBlock Style="{StaticResource normalAccountText_style}" Text="Описание проблемы" />
-                    <TextBox
-                        x:Name="ProblemDiscription"
-                        MaxLength="300"
-                        Style="{StaticResource problemInput_style}" />
+                <!--  Ввод типа техники  -->
+                <TextBlock Style="{StaticResource normalAccountText_style}" Text="Тип техники*" />
+                <TextBox
+                    x:Name="TechTypeInput"
+                    Height="30"
+                    MaxLength="30"
+                    Style="{StaticResource problemInput_style}" />
+
+                <!--  Ввод модель техники  -->
+                <TextBlock Style="{StaticResource normalAccountText_style}" Text="Модель техники*" />
+                <TextBox
+                    x:Name="TechModelInput"
+                    Height="30"
+                    MaxLength="100"
+                    Style="{StaticResource problemInput_style}" />
+
+                <!--  Ввод модель техники  -->
+                <TextBlock Style="{StaticResource normalAccountText_style}" Text="Описание проблемы*" />
+                <TextBox
+                    x:Name="ProblemDiscription"
+                    MaxLength="300"
+                    Style="{StaticResource problemInput_style}" />
 
 
-                    <!--  Кнопка для регистрации записи  -->
-                    <Button Style="{StaticResource ContinueButton_style}" Click="RegRepair"/>
+                <!--  Кнопка для регистрации записи  -->
+                <Button Click="addNewRepair" Style="{StaticResource ContinueButton_style}" />
 
 
 
-                </StackPanel>
-            </ScrollViewer>
+            </StackPanel>
+
 
         </Grid>
     </Grid>

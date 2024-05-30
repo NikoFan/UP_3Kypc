@@ -33,8 +33,76 @@ namespace EducationalPractice
 
 
         // Возврат даты ГГГГ-ММ-ДД
-        public string takeTime() => DateTime.Today.ToString().Split(' ')[0].Split('.')[2] +
-                                    DateTime.Today.ToString().Split(' ')[0].Split('.')[1] +
+        public string takeTime() => DateTime.Today.ToString().Split(' ')[0].Split('.')[2] + "-" +
+                                    DateTime.Today.ToString().Split(' ')[0].Split('.')[1] + "-" +
                                     DateTime.Today.ToString().Split(' ')[0].Split('.')[0];
+
+
+        public Dictionary<string, string> userAccountInformation()
+        {
+            return new DatabaseConnection().returnuserAccountInformation();
+        }
+
+        // Открытие аккаунтов пользователей
+        public void openUserAccounts(string userRole)
+        {
+            switch (userRole)
+            {
+                case ("Оператор"):
+                    break;
+                case ("Мастер"):
+                    break;
+                case ("Менеджер"):
+                    break;
+                case ("Заказчик"):
+                    ClientAccWindow clientAccountWindow = new ClientAccWindow()
+                    {
+                        Top = Top,
+                        Left = Left
+                    };
+
+                    clientAccountWindow.Show();
+                    break;
+
+            }
+        }
+
+
+        public Border createAppBorder(string name)
+        {
+            Border border = new Border
+            {
+                Name = "name_" + name,
+                Height = 100,
+                Width = 400,
+                Background = new SolidColorBrush(Colors.MediumPurple),
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Thickness(1),
+
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            border.MouseEnter += (sender, args) =>
+            {
+                border.Background = new SolidColorBrush(Colors.DarkCyan);
+            };
+
+            border.MouseLeave += (sender, args) =>
+            {
+                border.Background = new SolidColorBrush(Colors.MediumPurple);
+            };
+
+
+            return border;
+        }
+
+
+        public TextBlock createAppInfTextBlock(string text) => new TextBlock
+        {
+            Text = text,
+            Foreground = new SolidColorBrush(Colors.White),
+            FontSize = 16,
+            HorizontalAlignment = HorizontalAlignment.Left,
+        };
     }
 }
